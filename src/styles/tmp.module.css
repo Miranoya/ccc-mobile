@@ -1,0 +1,74 @@
+.formContent {
+  height: 1000px;
+}
+
+.boxTextInput {
+  padding-top: 30px;
+  padding-bottom: 30px;
+  position: relative;
+}
+
+.form {
+  display: block;
+  top: 50%;
+  left: 50%;
+  width: 80%;
+  transform: translate(-50%, -50%);
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: green;
+}
+
+.formH1 {
+  font-size: 1rem;
+  text-align: start;
+  width: 80%;
+  margin-bottom: 1rem;
+  color: #fff;
+}
+
+.formInputs {
+  margin-bottom: 0.5rem;
+  text-align: left;
+  width: 80%;
+  background-color: blue;
+}
+
+.formLabel {
+  display: inline-block;
+  font-size: 0.8rem;
+  margin-bottom: 6px;
+  color: #fff;
+}
+
+.formLabelSpan {
+  font-size: 0.6rem;
+  color: red;
+}
+
+.formInput {
+  display: block;
+  outline: none;
+  border-radius: 2px;
+  width: 100%;
+}
+
+.submitButton {
+  width: 80%;
+  height: 50px;
+  background: linear-gradient(
+    90deg,
+    rgb(39, 143, 255) 0%,
+    rgb(12, 99, 250) 100%
+  );
+}
+
+.boxPhotosUploader {
+  display: block;
+  background-color: aqua;
+  padding-top: 50px;
+  padding-bottom: 50px;
+}

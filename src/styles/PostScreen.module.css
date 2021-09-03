@@ -1,0 +1,47 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  justify-items: center;
+  align-items: center;
+}
+
+.formInputs {
+  width: 80%;
+  text-align: left;
+}
+
+.formLabel {
+  display: inline-block;
+  font-size: 0.8rem;
+}
+
+.formLabelSpan {
+  font-size: 0.6rem;
+  color: red;
+}
+
+.formInputTitle {
+  display: block;
+  outline: none;
+  border-radius: 2px;
+  width: 100%;
+}
+
+.formInputDescription {
+  display: block;
+  outline: none;
+  border-radius: 2px;
+  width: 100%;
+  padding-bottom: 2rem;
+}
+
+.submitButton {
+  width: 80%;
+  height: 50px;
+  margin-top: 20px;
+  background: linear-gradient(
+    90deg,
+    rgb(39, 143, 255) 0%,
+    rgb(12, 99, 250) 100%
+  );
+}
