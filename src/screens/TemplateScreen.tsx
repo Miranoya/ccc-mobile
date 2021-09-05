@@ -7,6 +7,9 @@ import { makeStyles } from '@material-ui/core/styles';
 /* router */
 import { Link } from "react-router-dom";
 
+/* styles */
+import styles from '../styles/TemplateScreen.module.css';
+
 /* screens */
 import HomeScreen from './HomeScreen';
 import PostScreen from './PostScreen';
@@ -32,7 +35,10 @@ const useStyles = makeStyles({
   },
   tabicon: {
     flex: 2,
-  }
+    fontSize: 12,
+    height: 20,
+    width: 20,
+  },
 });
 
 
@@ -62,7 +68,7 @@ const Template: React.FC = () => {
 
       <div>
         <Paper square className={classes.root}>
-          <Tabs value={value} onChange={handleChange} centered aria-label=" tabs">
+          <Tabs value={value} onChange={handleChange} centered aria-label=" tabs" className={styles.tabs}>
             <Tab icon={<HomeIcon />} label="ホーム" component={Link} to="/"    className={classes.tabicon}/>
             <Tab icon={<EmailIcon />} label="報告"  component={Link} to="/post" className={classes.tabicon}/>
           </Tabs>

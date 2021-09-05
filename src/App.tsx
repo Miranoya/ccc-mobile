@@ -50,13 +50,13 @@ function App() {
           }
         </div>
 
-        <button onClick={() => localStorage.clear()}>Storage clear</button>
         
         <Switch>
           <Route exact path="/" component={() => <HomeScreen />} />
           <Route exact path="/post" component={() => <PostScreen />} />
         </Switch>
       </BrowserRouter>
+      <button onClick={() => localStorage.clear()}>Storage clear</button>
     </div>
   );
 }
