@@ -1,0 +1,6 @@
+.scrollView {
+  margin-top: 20px;
+  overflow-x: auto;
+  white-space: nowrap;
+  -webkit-overflow-scrolling: touch;
+}
