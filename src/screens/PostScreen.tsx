@@ -72,10 +72,10 @@ const PostScreen: React.FC = () => {
     /* formDataに変換する */
     const formData = new FormData()
     formData.append("title", title);
-    formData.append("description", description);
+    formData.append("detail", description);
     /* 位置情報をformDataに追加する */
-    formData.append("latitude", String(position.latitude));
-    formData.append("longitude", String(position.longitude));
+    formData.append("lat", String(position.latitude));
+    formData.append("lng", String(position.longitude));
 
     /* imageCompressionのoption */
     const compressOption = {
@@ -92,15 +92,26 @@ const PostScreen: React.FC = () => {
       })
     );
 
+    /* formData(photo)初期化 */
+    formData.append("sub_image_1", '');
+    formData.append("sub_image_2", '');
+    formData.append("sub_image_3", '');
+    formData.append("thumbnail", '');
+
+    /* サムネイルを追加 */
+    formData.set("thumbnail", compressedPhotoData[0].blob);
+
     /* formDataにphotoを追加 */
-    compressedPhotoData.forEach((photoData) => {
-      formData.append("photo", photoData.blob, photoData.name);
-    });
+    for (let i = 1; i < compressedPhotoData.length; i++) {
+      const key: string = "sub_image_" + String(i);
+      formData.set(key, compressedPhotoData[i].blob);
+    }
 
     console.log(...formData.entries())
 
     /* axiosによるPOST処理 */
-    const url: string = "https://httpbin.org/post";
+    //const url: string = "https://httpbin.org/post";
+    const url: string="https://esrnf6poie.execute-api.us-east-1.amazonaws.com/Mock/spot";
     const header = { headers: {
       'Content-Type': 'multipart/form-data',
        }};
@@ -112,10 +123,6 @@ const PostScreen: React.FC = () => {
            console.log("Failed");
            console.log(err.data);
          })
-  }
-
-  const onTest = () => {
-    console.log("test")
   }
 
   return (
