@@ -1,6 +1,14 @@
-.scrollView {
+.spotViewInfo {
+  width: 80%;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.spotViewTitle {
+  text-align: left;
+}
+
+.divider {
   margin-top: 20px;
-  overflow-x: auto;
-  white-space: nowrap;
-  -webkit-overflow-scrolling: touch;
+  margin-bottom: 20px;
 }
