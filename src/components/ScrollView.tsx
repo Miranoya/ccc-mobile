@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import axios from 'axios';
 /* styles */
 import styles from '../styles/ScrollView.module.css';
@@ -7,10 +7,26 @@ import { Spot } from './Spot';
 import SpotView from './SpotView';
 /* material ui */
 import { Button } from '@material-ui/core';
-import { ObjectType } from 'typescript';
 
 const ScrollView: React.FC = () => {
   const [spotData, setSpotData] = useState<Spot[]>([]);
+
+  /* useEffect */
+  useEffect( () => {
+    let spotJson: Spot[] = [];
+    const url: string = "https://esrnf6poie.execute-api.us-east-1.amazonaws.com/Mock/spot";
+    axios.get(url)
+         .then(res => {
+           console.log("success");
+           spotJson = res.data;
+           console.log(spotJson);
+           setSpotData(spotJson);
+         })
+         .catch(err => {
+           console.log("failed");
+           console.log(err);
+         });
+  })
 
   /* 更新ボタンの処理 */
   const onUpdate = () => {

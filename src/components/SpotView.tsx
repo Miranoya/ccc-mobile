@@ -1,23 +1,24 @@
-import React, {useState} from 'react';
+import React, { useState , useEffect } from 'react';
 import axios from 'axios';
 /* components */
 import { Spot } from './Spot';
 /* styles */
 import styles from "../styles/SpotView.module.css";
 /* material ui */
-import { Box, IconButton } from '@material-ui/core';
+import { Divider, IconButton, Button } from '@material-ui/core';
 import PanToolIcon from '@material-ui/icons/PanTool';
 import { makeStyles } from '@material-ui/core/styles';
 
+/* styleの設定 */
 const useStyles = makeStyles({
   agreeIconFalse: {
-    width: 40,
-    height: 40,
+    width: 30,
+    height: 30,
   },
   agreeIconTrue: {
     color: "red",
-    width: 40,
-    height: 40,
+    width: 30,
+    height: 30,
   }
 });
 
@@ -28,9 +29,11 @@ interface Props{
 const SpotView: React.FC<Props> = ({spotData}) => {
   const classes = useStyles();
   const [isAgreed, setIsAgreed] = useState(false);
+  const [agreed, setAgreed] = useState<number>(spotData.agreed);
 
+  /* 賛成ボタンの処理 */
   const onClickAgreed = () => {
-    isAgreed ? (spotData.agreed--) : (spotData.agreed++);
+    isAgreed ? setAgreed(agreed-1) : setAgreed(agreed+1);
     setIsAgreed(!isAgreed);
     const data = {agrred: isAgreed};
     const url: string="https://esrnf6poie.execute-api.us-east-1.amazonaws.com/Mock/spot/" + spotData.uuid;
@@ -41,20 +44,29 @@ const SpotView: React.FC<Props> = ({spotData}) => {
          }).catch(err => {
            console.log("Failed");
            console.log(err.data);
-         })
+         });
   };
   
 
   return (
     <div className={styles.view}>
-      <Box border={1} borderRadius={16} className={styles.box}>
-
-        <div className={styles.title}>
-          {spotData.title}
+      <div className={styles.box}>
+        <div className={styles.photoPreviewArea}>
+          <div className={styles.photoView}>
+            <img src = {spotData.thumbnail} className={styles.previewImg} />
+          </div>
         </div>
-
-        <div className={styles.photoView}>
-          <img src = {spotData.thumbnail} className={styles.previewImg} />
+        <div>
+          <div className={styles.title}>
+            { spotData.title }
+          </div>
+          <Divider variant="middle" className={styles.divider} />
+          <div className={styles.place}>
+            { spotData.place }
+          </div>
+          <div className={styles.status}>
+            現在状況：<span className={styles.statusStyle}>{spotData.status}</span>
+          </div>
         </div>
 
         <div className={styles.agreeView}>
@@ -62,14 +74,20 @@ const SpotView: React.FC<Props> = ({spotData}) => {
             {isAgreed ? <PanToolIcon className={classes.agreeIconTrue}/> : <PanToolIcon className={classes.agreeIconFalse}/>}
           </IconButton>
           <div className={styles.agreeLabel}>
-            {spotData.agreed}
+            { agreed }
           </div>
-          <div>
+          <div className={styles.agreeTitle}>
             そう思う!
           </div>
         </div>
+
+        <Divider variant="middle" className={styles.divider} />
+
+        <div className={styles.detailBlock}>
+            <Button className={styles.detailButton}>詳細→</Button>
+        </div>
         
-      </Box>
+      </div>
     </div>
   )
 }

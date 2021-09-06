@@ -15,6 +15,7 @@ const HomeScreen: React.FC = () => {
           近くの危険箇所
         </Typography>
       </div>
+      <Divider variant="middle" className={styles.divider} />
       <ScrollView />
       <Divider variant="middle" className={styles.divider} />
     </div>
