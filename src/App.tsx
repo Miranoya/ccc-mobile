@@ -39,7 +39,7 @@ function App() {
 
         <div>
           {existsData
-            ? <div>でーたが入っています</div> 
+            ? <div></div> 
             : (() =>{
               return <div> でーたが入っていません
                         <Modal isOpen = {modalIsOpen}>
