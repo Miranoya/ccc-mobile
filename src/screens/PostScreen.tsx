@@ -3,7 +3,9 @@ import { useForm, useFormState, SubmitErrorHandler} from "react-hook-form";
 import imageCompression from 'browser-image-compression';
 import axios from 'axios';
 /* material ui */
-import { Box, Container, Button, TextField } from '@material-ui/core';
+import { Button, TextField } from '@material-ui/core';
+import SendIcon from '@material-ui/icons/Send';
+import ClearIcon from '@material-ui/icons/Clear';
 /* components */
 import PhotosUpload from "../components/PhotosUpload";
 /* styles */
@@ -23,21 +25,18 @@ const PostScreen: React.FC = () => {
 
   /* useState */
   const [photos, setPhotos] = useState<File[]>([]);
-  const [values, setValues] = useState({
-    title: '',
-    description: ''
-  });
   const [position, setPosition] = useState({ latitude: 0, longitude: 0 });
-  //const [errors, setErrors] = useState({});
+  const [initTitle, setInitTitle] = useState<string>("");
+  const [initDescription, setInitDescription] = useState<string>("");
 
-  /* 入力があったときのイベントハンドラ */
-  const handleChange = (e: any) => {
-    const { name, value } = e.target;
-    setValues({
-      ...values,
-      [name]: value
-    }); 
-  };
+  /* clearボタンの処理 */
+  const onClear = () => {
+    if (window.confirm("入力を破棄しますか?")){
+      setInitTitle("");
+      setInitDescription("");
+      setPhotos([]);
+    }
+  }
 
   /* Geolocation API に関する処理 */
   const getCurrentPosition = () => {
@@ -51,11 +50,11 @@ const PostScreen: React.FC = () => {
   const handleOnSubmit = async (data: Inputs) => {
     const { title, description } = data;
     if (
-      title === "" &&
+      title === "" ||
       photos.length === 0
     ) {
       /* titleとphotoが空なら送信しない */
-      window.confirm("入力されていない項目があります");
+      window.confirm("1枚以上写真を添付してください");
       return;
     }
 
@@ -142,14 +141,15 @@ const PostScreen: React.FC = () => {
               <span className={styles.formLabelSpan}> *必須</span>
             </label>
             <TextField 
-              type="text"  
+              type="text"
               {...register("title", {required: true, maxLength: 12})}
               fullWidth
               className={styles.formInputTitle} 
               label="最大12文字以内"
-              onChange={handleChange}
               error = {Boolean(errors.title)}
               helperText={errors.title && "タイトルを12文字以内で入力してください"}
+              onChange={(event) => setInitTitle(event.target.value)} 
+              value={initTitle}
             />
           </div>
           <div className={styles.descriptionInputArea}>
@@ -162,15 +162,18 @@ const PostScreen: React.FC = () => {
               fullWidth
               className={styles.formInputDescription} 
               label="危険箇所の状況を教えてください"
-              onChange={handleChange}
+              onChange={(event) => setInitDescription(event.target.value)} 
+              value={initDescription}
             />
           </div>
           <div className={styles.buttonArea}>  
-            <Button type="submit" variant="contained" color="primary" className={styles.bottomButton}>
-              送信する
+            <Button  type="submit" variant="contained" color="primary" className={styles.bottomButton}>
+              <span className={styles.buttonLabel}>送信</span>
+              <SendIcon className={styles.buttonIcon} fontSize="small" />
             </Button>
-            <Button  variant="contained" color="primary" className={styles.bottomButton}>
-              クリア
+            <Button  onClick={onClear} variant="contained" color="primary" className={styles.bottomButton} >
+              <span>クリア</span>
+              <ClearIcon className={styles.buttonIcon} fontSize="small" />
             </Button>
           </div>
         </form>
