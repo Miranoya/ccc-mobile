@@ -56,7 +56,7 @@ function App() {
           <Route exact path="/post" component={() => <PostScreen />} />
         </Switch>
       </BrowserRouter>
-      <button onClick={() => localStorage.clear()}>Storage clear</button>
+      {/*<button onClick={() => localStorage.clear()}>Storage clear</button>*/}
     </div>
   );
 }
