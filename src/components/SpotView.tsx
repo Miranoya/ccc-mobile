@@ -84,7 +84,7 @@ const SpotView: React.FC<Props> = ({spotData}) => {
         <Divider variant="middle" className={styles.divider} />
 
         <div className={styles.detailBlock}>
-            <Button className={styles.detailButton}>詳細→</Button>
+            <Button className={styles.detailButton}><span className={styles.detailButtonLabel}>詳細→</span></Button>
         </div>
         
       </div>

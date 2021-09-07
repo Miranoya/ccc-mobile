@@ -26,7 +26,7 @@ const ScrollView: React.FC = () => {
            console.log("failed");
            console.log(err);
          });
-  })
+  },[])
 
   /* 更新ボタンの処理 */
   const onUpdate = () => {
