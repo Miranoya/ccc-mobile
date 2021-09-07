@@ -8,6 +8,8 @@ import styles from "../styles/SpotView.module.css";
 import { Divider, IconButton, Button } from '@material-ui/core';
 import PanToolIcon from '@material-ui/icons/PanTool';
 import { makeStyles } from '@material-ui/core/styles';
+/* config */
+import { config } from '../config/Config';
 
 /* styleの設定 */
 const useStyles = makeStyles({
@@ -36,7 +38,7 @@ const SpotView: React.FC<Props> = ({spotData}) => {
     isAgreed ? setAgreed(agreed-1) : setAgreed(agreed+1);
     setIsAgreed(!isAgreed);
     const data = {agrred: isAgreed};
-    const url: string="https://esrnf6poie.execute-api.us-east-1.amazonaws.com/Mock/spot/" + spotData.uuid;
+    const url: string= config.spotPatchUrl + spotData.uuid;
     axios.patch(url, data)
          .then(res => {
            console.log("Sucusess");

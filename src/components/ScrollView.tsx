@@ -7,6 +7,8 @@ import { Spot } from './Spot';
 import SpotView from './SpotView';
 /* material ui */
 import { Button } from '@material-ui/core';
+/* config */
+import { config } from '../config/Config';
 
 const ScrollView: React.FC = () => {
   const [spotData, setSpotData] = useState<Spot[]>([]);
@@ -14,11 +16,11 @@ const ScrollView: React.FC = () => {
   /* useEffect */
   useEffect( () => {
     let spotJson: Spot[] = [];
-    const url: string = "https://esrnf6poie.execute-api.us-east-1.amazonaws.com/Mock/spot";
+    const url: string = config.allSpotGETUrl;
     axios.get(url)
          .then(res => {
            console.log("success");
-           spotJson = res.data;
+           spotJson = res.data; 
            console.log(spotJson);
            setSpotData(spotJson);
          })
@@ -31,7 +33,7 @@ const ScrollView: React.FC = () => {
   /* 更新ボタンの処理 */
   const onUpdate = () => {
     let spotJson: Spot[] = [];
-    const url: string = "https://esrnf6poie.execute-api.us-east-1.amazonaws.com/Mock/spot";
+    const url: string = config.allSpotGETUrl;
     axios.get(url)
          .then(res => {
            console.log("success");

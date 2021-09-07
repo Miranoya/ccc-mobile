@@ -8,6 +8,8 @@ import { Box, Container, Button, TextField } from '@material-ui/core';
 import PhotosUpload from "../components/PhotosUpload";
 /* styles */
 import styles from "../styles/PostScreen.module.css";
+/* conifg */
+import { config } from "../config/Config";
 
 type Inputs = {
   title: string;
@@ -110,7 +112,7 @@ const PostScreen: React.FC = () => {
 
     /* axiosによるPOST処理 */
     //const url: string = "https://httpbin.org/post";
-    const url: string="https://esrnf6poie.execute-api.us-east-1.amazonaws.com/Mock/spot";
+    const url: string= config.spotPostUrl;
     const header = { headers: {
       'Content-Type': 'multipart/form-data',
        }};
