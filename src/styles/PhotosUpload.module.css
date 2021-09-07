@@ -29,6 +29,8 @@
   padding: 15px 30px;
   margin: 0 10px 0 0;
   display: inline-block;
+  box-shadow: 0 3px 6px rgba(7, 110, 124, 0.16),
+    0 3px 6px rgba(7, 110, 124, 0.23);
 }
 
 .label input {
@@ -39,4 +41,9 @@
   overflow-x: auto;
   white-space: nowrap;
   -webkit-overflow-scrolling: touch;
+}
+
+.errorLabel {
+  font-size: 0.8rem;
+  color: red;
 }

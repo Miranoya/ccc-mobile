@@ -48,14 +48,31 @@
 }
 
 .buttonArea {
+  margin-top: 10px;
   display: flex;
   justify-content: space-evenly;
   width: 90%;
+  padding-bottom: 8px;
 }
 
 .bottomButton {
+  border-radius: 30px;
   background: linear-gradient(to bottom right, #2adf88, #36ff9f);
-  border-radius: 22px;
+  box-shadow: 0 3px 6px rgba(7, 110, 124, 0.16),
+    0 3px 6px rgba(7, 110, 124, 0.23);
   height: 44px;
-  width: 30%;
+  width: 35%;
+  display: flex;
+  position: relative;
+}
+
+.buttonLabel {
+  color: white;
+}
+
+.buttonIcon {
+  font-size: 1rem;
+  position: absolute;
+  padding-right: 10px;
+  right: 0;
 }
