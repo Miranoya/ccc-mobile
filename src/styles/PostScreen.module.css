@@ -1,3 +1,9 @@
+.formArea {
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
 .form {
   display: flex;
   flex-direction: column;
@@ -5,8 +11,14 @@
   align-items: center;
 }
 
-.formInputs {
-  width: 80%;
+.titleInputArea {
+  width: 90%;
+  text-align: left;
+}
+
+.descriptionInputArea {
+  margin-top: 5px;
+  width: 90%;
   text-align: left;
 }
 
@@ -35,13 +47,15 @@
   padding-bottom: 2rem;
 }
 
-.submitButton {
-  width: 80%;
-  height: 50px;
-  margin-top: 20px;
-  background: linear-gradient(
-    90deg,
-    rgb(39, 143, 255) 0%,
-    rgb(12, 99, 250) 100%
-  );
+.buttonArea {
+  display: flex;
+  justify-content: space-evenly;
+  width: 90%;
+}
+
+.bottomButton {
+  background: linear-gradient(to bottom right, #2adf88, #36ff9f);
+  border-radius: 22px;
+  height: 44px;
+  width: 30%;
 }
