@@ -115,6 +115,18 @@ const PhotosUpload: React.FC<PhotosUploadProps> = ({name, photos, componentRef, 
         )}
       </div>
 
+      <div>
+        {isSameError && (
+          <div className={styles.errorLabel}>既に選択された画像と同じものは表示されません</div>
+        )}
+        {isNumberError && (
+          <div className={styles.errorLabel}>添付できる画像は3枚までです</div>
+        )}
+        {isFileTypeError && (
+          <div className={styles.errorLabel}>添付できるのは画像ファイルのみです</div>
+        )}
+      </div>
+
       <div className={styles.addButton}>
         <label htmlFor={name} className={styles.label}>
           写真を追加
