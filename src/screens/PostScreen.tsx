@@ -3,12 +3,11 @@ import { useForm, useFormState, SubmitErrorHandler} from "react-hook-form";
 import imageCompression from 'browser-image-compression';
 import axios from 'axios';
 /* material ui */
-import { Box, Container, Button } from '@material-ui/core';
+import { Box, Container, Button, TextField } from '@material-ui/core';
 /* components */
 import PhotosUpload from "../components/PhotosUpload";
 /* styles */
 import styles from "../styles/PostScreen.module.css";
-import { isConstructorDeclaration } from "typescript";
 
 type Inputs = {
   title: string;
@@ -18,7 +17,7 @@ type Inputs = {
 const PostScreen: React.FC = () => {
 
   /* useFormを呼び出して使いたいメソッド */
-  const { register, handleSubmit, formState } = useForm<Inputs>();
+  const { register, formState: {errors}, handleSubmit } = useForm<Inputs>();
 
   /* useState */
   const [photos, setPhotos] = useState<File[]>([]);
@@ -27,7 +26,7 @@ const PostScreen: React.FC = () => {
     description: ''
   });
   const [position, setPosition] = useState({ latitude: 0, longitude: 0 });
-  const [errors, setErrors] = useState({});
+  //const [errors, setErrors] = useState({});
 
   /* 入力があったときのイベントハンドラ */
   const handleChange = (e: any) => {
@@ -132,37 +131,46 @@ const PostScreen: React.FC = () => {
       </div>
 
 
-      <div className={styles.boxTextInput}>
+      <div className={styles.formArea}>
         
         <form className={styles.form} onSubmit={handleSubmit(handleOnSubmit)}>
 
-          <div className={styles.formInputs}>
+          <div className={styles.titleInputArea}>
             <label htmlFor="title" className={styles.formLabel}>タイトル
               <span className={styles.formLabelSpan}> *必須</span>
             </label>
-            <input 
+            <TextField 
               type="text"  
-              {...register("title", {required: true})}
+              {...register("title", {required: true, maxLength: 12})}
+              fullWidth
               className={styles.formInputTitle} 
-              placeholder="タイトルを入力してください"
+              label="最大12文字以内"
               onChange={handleChange}
+              error = {Boolean(errors.title)}
+              helperText={errors.title && "タイトルを12文字以内で入力してください"}
             />
           </div>
-          <div className={styles.formInputs}>
-            <label htmlFor="description" className={styles.formLabel}>説明
+          <div className={styles.descriptionInputArea}>
+            <label htmlFor="description" className={styles.formLabel}>詳細
               <span className={styles.formLabelSpan}> *任意</span>
             </label>
-            <textarea 
+            <TextField 
+              type="text"  
               {...register("description")}
+              fullWidth
               className={styles.formInputDescription} 
-              placeholder="概要を入力してください"
+              label="危険箇所の状況を教えてください"
               onChange={handleChange}
             />
           </div>
-
-          <Button type="submit" variant="contained" color="primary" className={styles.submitButton}>
-            送信する
-          </Button>
+          <div className={styles.buttonArea}>  
+            <Button type="submit" variant="contained" color="primary" className={styles.bottomButton}>
+              送信する
+            </Button>
+            <Button  variant="contained" color="primary" className={styles.bottomButton}>
+              クリア
+            </Button>
+          </div>
         </form>
         
       </div>
