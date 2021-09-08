@@ -9,12 +9,17 @@ import SpotView from './SpotView';
 import { Button } from '@material-ui/core';
 /* config */
 import { config } from '../config/Config';
+/* React Loading */
+import ReactLoading from 'react-loading';
 
 const ScrollView: React.FC = () => {
+  /* useState */
   const [spotData, setSpotData] = useState<Spot[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
 
   /* useEffect */
   useEffect( () => {
+    setLoading(true);
     let spotJson: Spot[] = [];
     const url: string = config.allSpotGETUrl;
     axios.get(url)
@@ -28,10 +33,12 @@ const ScrollView: React.FC = () => {
            console.log("failed");
            console.log(err);
          });
+    setLoading(false);
   },[])
 
   /* 更新ボタンの処理 */
   const onUpdate = () => {
+    setLoading(true);;
     let spotJson: Spot[] = [];
     const url: string = config.allSpotGETUrl;
     axios.get(url)
@@ -45,6 +52,7 @@ const ScrollView: React.FC = () => {
            console.log("failed");
            console.log(err);
          });
+    setLoading(false);
     }
 
   const spotDatas: Spot[] = [
@@ -66,11 +74,18 @@ const ScrollView: React.FC = () => {
 
   return (
     <div>
-      <div className={styles.scrollView}>
-        {spotData.map((spot) => 
-          <SpotView spotData = {spot} />
-        )}
-      </div>
+      { !loading &&(
+        <div className={styles.scrollView}>
+          {spotData.map((spot) => 
+            <SpotView spotData = {spot} />
+          )}
+        </div>
+      )}
+      { loading &&(
+        <div className={styles.loadingArea}>
+          <ReactLoading type="spin" color="#2adf88" className={styles.loadingIcon}></ReactLoading>
+        </div>
+      )}
       <Button onClick={onUpdate}>更新</Button>
     </div>
   )

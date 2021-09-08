@@ -3,7 +3,7 @@ import { useForm, useFormState, SubmitErrorHandler} from "react-hook-form";
 import imageCompression from 'browser-image-compression';
 import axios from 'axios';
 /* material ui */
-import { Button, TextField } from '@material-ui/core';
+import { Dialog, DialogTitle, DialogContent, DialogActions, Button, TextField } from '@material-ui/core';
 import SendIcon from '@material-ui/icons/Send';
 import ClearIcon from '@material-ui/icons/Clear';
 /* components */
@@ -12,6 +12,8 @@ import PhotosUpload from "../components/PhotosUpload";
 import styles from "../styles/PostScreen.module.css";
 /* conifg */
 import { config } from "../config/Config";
+/* React Loading */
+import ReactLoading from "react-loading";
 
 type Inputs = {
   title: string;
@@ -28,7 +30,20 @@ const PostScreen: React.FC = () => {
   const [position, setPosition] = useState({ latitude: 0, longitude: 0 });
   const [initTitle, setInitTitle] = useState<string>("");
   const [initDescription, setInitDescription] = useState<string>("");
+  const [isResultOpen, setIsResultOpen] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [isPostSuccessful, setIsPostSuccessful] = useState<boolean>(false);
 
+  /* Loading Dialogをクローズする処理 */
+  const handleLoadingDialogClose = () => {
+    setLoading(false);
+  }
+
+  /* Result Dialogをクローズする処理 */
+  const handleResultDialogClose = () => {
+    setIsResultOpen(false);
+  }
+ 
   /* clearボタンの処理 */
   const onClear = () => {
     if (window.confirm("入力を破棄しますか?")){
@@ -109,6 +124,9 @@ const PostScreen: React.FC = () => {
 
     console.log(...formData.entries())
 
+    /* Loading Dialogをオープン */
+    setLoading(true);
+
     /* axiosによるPOST処理 */
     //const url: string = "https://httpbin.org/post";
     const url: string= config.spotPostUrl;
@@ -119,9 +137,19 @@ const PostScreen: React.FC = () => {
          .then(res => {
            console.log("Sucusess");
            console.log(res.data);
+           /* Loading Dialog */
+           handleLoadingDialogClose();
+           /* Result Dialog */
+           setIsPostSuccessful(true);
+           setIsResultOpen(true);
          }).catch(err => {
            console.log("Failed");
            console.log(err.data);
+           /* Loading Dialog */
+           handleLoadingDialogClose();
+           /* Result Dialog */
+           setIsPostSuccessful(false);
+           setIsResultOpen(true);
          })
   }
 
@@ -177,6 +205,43 @@ const PostScreen: React.FC = () => {
             </Button>
           </div>
         </form>
+
+        {/* Loading Dialog */}
+        <Dialog
+          open={loading}
+          onClose={handleLoadingDialogClose}
+          aria-labelleby="alert-dialog-title"
+          aria-describedby="alert-dialog-icon"
+        >
+          <DialogTitle id="alert-dialog-title">{"送信中"}</DialogTitle>
+          <DialogContent id="alert-dialog-icon">
+            <ReactLoading type="bars" color="#2adf88" className={styles.loadingIcon}></ReactLoading>
+          </DialogContent>
+        </Dialog>
+
+        {/* Result Dialog */}
+        <Dialog
+          open={isResultOpen}
+          onClose={handleResultDialogClose}
+          aria-labelleby="alert-dialog-title"
+          aria-describedby="alert-dialog-icon"
+        >
+          { isPostSuccessful &&(
+              <DialogContent id="alert-dialog-icon">
+                <div>送信されました</div>
+              </DialogContent>
+          )}
+          { !isPostSuccessful &&(
+              <DialogContent id="alert-dialog-icon">
+                <div>送信に失敗しました</div>
+              </DialogContent>
+          )}
+          <DialogActions>
+            <Button onClick={handleResultDialogClose}>
+              <span className={styles.dialogActionLabel}>OK</span>
+            </Button>
+          </DialogActions>
+        </Dialog>
         
       </div>
     </div>
