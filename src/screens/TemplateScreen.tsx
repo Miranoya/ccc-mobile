@@ -78,8 +78,8 @@ const Template: React.FC = () => {
         <div>
           <Paper square className={classes.root}>
             <Tabs value={value} onChange={handleChange} centered aria-label=" tabs" className={styles.tabs}>
-              <Tab icon={<HomeIcon />} label="ホーム" component={Link} to=""    className={classes.tabicon}/>
-              <Tab icon={<EmailIcon />} label="報告"  component={Link} to="post" className={classes.tabicon}/>
+              <Tab icon={<HomeIcon />} label="ホーム" component={Link} to="/"    className={classes.tabicon}/>
+              <Tab icon={<EmailIcon />} label="報告"  component={Link} to="/post" className={classes.tabicon}/>
             </Tabs>
           </Paper>
         </div>
