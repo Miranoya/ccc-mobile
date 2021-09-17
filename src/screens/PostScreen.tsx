@@ -137,7 +137,7 @@ const PostScreen: React.FC = () => {
     };
     axios.post(url, formData, header)
       .then(res => {
-        console.log("Sucusess");
+        console.log("Success");
         console.log(res.data);
         /* Loading Dialog */
         handleLoadingDialogClose();
@@ -146,7 +146,7 @@ const PostScreen: React.FC = () => {
         setIsResultOpen(true);
       }).catch(err => {
         console.log("Failed");
-        console.log(err.data);
+        console.log(err.response.data);
         /* Loading Dialog */
         handleLoadingDialogClose();
         /* Result Dialog */
