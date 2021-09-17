@@ -16,13 +16,40 @@ const ScrollView: React.FC = () => {
   /* useState */
   const [spotData, setSpotData] = useState<Spot[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
+  const [position, setPosition] = useState({ latitude: 0, longitude: 0 });
+
+  /* Geolocation API に関する処理 */
+  const getCurrentPosition = () => {
+    navigator.geolocation.getCurrentPosition(position => {
+      const { latitude, longitude } = position.coords;
+      setPosition({ latitude, longitude });
+    })
+  };
+
+
 
   /* useEffect */
   useEffect( () => {
+    /* 位置情報が取得できるか判定する */
+    if( navigator.geolocation ){
+      // 現在位置を取得できる場合の処理
+      /* 位置情報をセットする */
+      getCurrentPosition();
+      } else {
+      // 現在位置を取得できない場合の処理
+      window.confirm("位置情報が取得できません");
+      return;
+      }
+    
     setLoading(true);
     let spotJson: Spot[] = [];
     const url: string = config.allSpotGETUrl;
-    axios.get(url)
+    axios.get(url, {
+      params:{
+        lng: position.longitude,
+        lat: position.latitude
+        }
+      })
          .then(res => {
            console.log("success");
            spotJson = res.data; 
@@ -38,12 +65,29 @@ const ScrollView: React.FC = () => {
 
   /* 更新ボタンの処理 */
   const onUpdate = () => {
+    /* 位置情報が取得できるか判定する */
+    if( navigator.geolocation ){
+      // 現在位置を取得できる場合の処理
+      /* 位置情報をセットする */
+      getCurrentPosition();
+      } else {
+      // 現在位置を取得できない場合の処理
+      window.confirm("位置情報が取得できません");
+      return;
+      }
+
     setLoading(true);;
     let spotJson: Spot[] = [];
     const url: string = config.allSpotGETUrl;
-    axios.get(url)
+    axios.get(url,{
+      params:{
+        lng: position.longitude,
+        lat: position.latitude
+        }
+      })
          .then(res => {
            console.log("success");
+           console.log(res);
            spotJson = res.data;
            console.log(spotJson);
            setSpotData(spotJson);

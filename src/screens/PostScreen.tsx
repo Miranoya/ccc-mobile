@@ -114,7 +114,7 @@ const PostScreen: React.FC = () => {
     formData.append("thumbnail", '');
 
     /* サムネイルを追加 */
-    formData.set("thumbnail", compressedPhotoData[0].blob);
+    formData.set("thumbnail", photos[0]);
 
     /* formDataにphotoを追加 */
     for (let i = 1; i < compressedPhotoData.length; i++) {
@@ -128,8 +128,8 @@ const PostScreen: React.FC = () => {
     setLoading(true);
 
     /* axiosによるPOST処理 */
-    //const url: string = "https://httpbin.org/post";
-    const url: string= config.spotPostUrl;
+    const url: string = "https://httpbin.org/post";
+    //const url: string= config.spotPostUrl;
     const header = { headers: {
       'Content-Type': 'multipart/form-data',
        }};

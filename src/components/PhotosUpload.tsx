@@ -61,7 +61,7 @@ const PhotosUpload: React.FC<PhotosUploadProps> = ({name, photos, componentRef, 
     });
 
     /*　写真が選択されていない */
-    if (pickedPhotos.length == 0) {
+    if (pickedPhotos.length === 0) {
       return
     }
     

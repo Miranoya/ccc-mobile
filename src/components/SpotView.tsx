@@ -37,7 +37,7 @@ const SpotView: React.FC<Props> = ({spotData}) => {
   const onClickAgreed = () => {
     isAgreed ? setAgreed(agreed-1) : setAgreed(agreed+1);
     setIsAgreed(!isAgreed);
-    const data = {agrred: isAgreed};
+    const data = {agreed: !isAgreed};
     const url: string= config.spotPatchUrl + spotData.uuid;
     axios.patch(url, data)
          .then(res => {
