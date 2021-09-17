@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useForm, useFormState, SubmitErrorHandler} from "react-hook-form";
+import { useForm, useFormState, SubmitErrorHandler } from "react-hook-form";
 import imageCompression from 'browser-image-compression';
 import axios from 'axios';
 /* material ui */
@@ -23,7 +23,7 @@ type Inputs = {
 const PostScreen: React.FC = () => {
 
   /* useFormを呼び出して使いたいメソッド */
-  const { register, formState: {errors}, handleSubmit } = useForm<Inputs>();
+  const { register, formState: { errors }, handleSubmit } = useForm<Inputs>();
 
   /* useState */
   const [photos, setPhotos] = useState<File[]>([]);
@@ -43,10 +43,10 @@ const PostScreen: React.FC = () => {
   const handleResultDialogClose = () => {
     setIsResultOpen(false);
   }
- 
+
   /* clearボタンの処理 */
   const onClear = () => {
-    if (window.confirm("入力を破棄しますか?")){
+    if (window.confirm("入力を破棄しますか?")) {
       setInitTitle("");
       setInitDescription("");
       setPhotos([]);
@@ -74,15 +74,15 @@ const PostScreen: React.FC = () => {
     }
 
     /* 位置情報が取得できるか判定する */
-    if( navigator.geolocation ){
+    if (navigator.geolocation) {
       // 現在位置を取得できる場合の処理
       /* 位置情報をセットする */
       getCurrentPosition();
-      } else {
+    } else {
       // 現在位置を取得できない場合の処理
       window.confirm("位置情報が取得できません");
       return;
-      }
+    }
 
     /* formDataに変換する */
     const formData = new FormData()
@@ -114,12 +114,12 @@ const PostScreen: React.FC = () => {
     formData.append("thumbnail", '');
 
     /* サムネイルを追加 */
-    formData.set("thumbnail", compressedPhotoData[0].blob);
+    formData.set("thumbnail", new File([compressedPhotoData[0].blob], compressedPhotoData[0].name));
 
     /* formDataにphotoを追加 */
     for (let i = 1; i < compressedPhotoData.length; i++) {
       const key: string = "sub_image_" + String(i);
-      formData.set(key, compressedPhotoData[i].blob);
+      formData.set(key, new File([compressedPhotoData[i].blob], compressedPhotoData[i].name));
     }
 
     console.log(...formData.entries())
@@ -129,28 +129,30 @@ const PostScreen: React.FC = () => {
 
     /* axiosによるPOST処理 */
     //const url: string = "https://httpbin.org/post";
-    const url: string= config.spotPostUrl;
-    const header = { headers: {
-      'Content-Type': 'multipart/form-data',
-       }};
+    const url: string = config.spotPostUrl;
+    const header = {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      }
+    };
     axios.post(url, formData, header)
-         .then(res => {
-           console.log("Sucusess");
-           console.log(res.data);
-           /* Loading Dialog */
-           handleLoadingDialogClose();
-           /* Result Dialog */
-           setIsPostSuccessful(true);
-           setIsResultOpen(true);
-         }).catch(err => {
-           console.log("Failed");
-           console.log(err.data);
-           /* Loading Dialog */
-           handleLoadingDialogClose();
-           /* Result Dialog */
-           setIsPostSuccessful(false);
-           setIsResultOpen(true);
-         })
+      .then(res => {
+        console.log("Sucusess");
+        console.log(res.data);
+        /* Loading Dialog */
+        handleLoadingDialogClose();
+        /* Result Dialog */
+        setIsPostSuccessful(true);
+        setIsResultOpen(true);
+      }).catch(err => {
+        console.log("Failed");
+        console.log(err.data);
+        /* Loading Dialog */
+        handleLoadingDialogClose();
+        /* Result Dialog */
+        setIsPostSuccessful(false);
+        setIsResultOpen(true);
+      })
   }
 
   return (
@@ -161,22 +163,22 @@ const PostScreen: React.FC = () => {
 
 
       <div className={styles.formArea}>
-        
+
         <form className={styles.form} onSubmit={handleSubmit(handleOnSubmit)}>
 
           <div className={styles.titleInputArea}>
             <label htmlFor="title" className={styles.formLabel}>タイトル
               <span className={styles.formLabelSpan}> *必須</span>
             </label>
-            <TextField 
+            <TextField
               type="text"
-              {...register("title", {required: true, maxLength: 12})}
+              {...register("title", { required: true, maxLength: 12 })}
               fullWidth
-              className={styles.formInputTitle} 
+              className={styles.formInputTitle}
               label="最大12文字以内"
-              error = {Boolean(errors.title)}
+              error={Boolean(errors.title)}
               helperText={errors.title && "タイトルを12文字以内で入力してください"}
-              onChange={(event) => setInitTitle(event.target.value)} 
+              onChange={(event) => setInitTitle(event.target.value)}
               value={initTitle}
             />
           </div>
@@ -184,22 +186,22 @@ const PostScreen: React.FC = () => {
             <label htmlFor="description" className={styles.formLabel}>詳細
               <span className={styles.formLabelSpan}> *任意</span>
             </label>
-            <TextField 
-              type="text"  
+            <TextField
+              type="text"
               {...register("description")}
               fullWidth
-              className={styles.formInputDescription} 
+              className={styles.formInputDescription}
               label="危険箇所の状況を教えてください"
-              onChange={(event) => setInitDescription(event.target.value)} 
+              onChange={(event) => setInitDescription(event.target.value)}
               value={initDescription}
             />
           </div>
-          <div className={styles.buttonArea}>  
-            <Button  type="submit" variant="contained" color="primary" className={styles.bottomButton}>
+          <div className={styles.buttonArea}>
+            <Button type="submit" variant="contained" color="primary" className={styles.bottomButton}>
               <span className={styles.buttonLabel}>送信</span>
               <SendIcon className={styles.buttonIcon} fontSize="small" />
             </Button>
-            <Button  onClick={onClear} variant="contained" color="primary" className={styles.bottomButton} >
+            <Button onClick={onClear} variant="contained" color="primary" className={styles.bottomButton} >
               <span>クリア</span>
               <ClearIcon className={styles.buttonIcon} fontSize="small" />
             </Button>
@@ -226,15 +228,15 @@ const PostScreen: React.FC = () => {
           aria-labelleby="alert-dialog-title"
           aria-describedby="alert-dialog-icon"
         >
-          { isPostSuccessful &&(
-              <DialogContent id="alert-dialog-icon">
-                <div>送信されました</div>
-              </DialogContent>
+          {isPostSuccessful && (
+            <DialogContent id="alert-dialog-icon">
+              <div>送信されました</div>
+            </DialogContent>
           )}
-          { !isPostSuccessful &&(
-              <DialogContent id="alert-dialog-icon">
-                <div>送信に失敗しました</div>
-              </DialogContent>
+          {!isPostSuccessful && (
+            <DialogContent id="alert-dialog-icon">
+              <div>送信に失敗しました</div>
+            </DialogContent>
           )}
           <DialogActions>
             <Button onClick={handleResultDialogClose}>
@@ -242,7 +244,7 @@ const PostScreen: React.FC = () => {
             </Button>
           </DialogActions>
         </Dialog>
-        
+
       </div>
     </div>
 
