@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useHistory } from "react-router-dom";
 import axios from 'axios';
 /* components */
 import { Spot } from './Spot';
@@ -33,6 +34,18 @@ const SpotView: React.FC<Props> = ({spotData}) => {
   const [isAgreed, setIsAgreed] = useState(false);
   const [agreed, setAgreed] = useState<number>(spotData.agreed);
 
+  /* useHistory */
+  const history = useHistory();
+
+
+  /* 詳細画面へ飛ぶ */
+  const onClickDetailButton = () => {
+    history.push({
+      pathname: "/civ/detail",
+      state: {spotData: spotData}
+    })
+  };
+
   /* 賛成ボタンの処理 */
   const onClickAgreed = () => {
     isAgreed ? setAgreed(agreed-1) : setAgreed(agreed+1);
@@ -48,7 +61,6 @@ const SpotView: React.FC<Props> = ({spotData}) => {
            console.log(err.data);
          });
   };
-  
 
   return (
     <div className={styles.view}>
@@ -90,7 +102,12 @@ const SpotView: React.FC<Props> = ({spotData}) => {
         <Divider variant="middle" className={styles.divider} />
 
         <div className={styles.detailBlock}>
-            <Button className={styles.detailButton}><span className={styles.detailButtonLabel}>詳細→</span></Button>
+            <Button 
+              className={styles.detailButton}
+               onClick={onClickDetailButton}
+            >
+              <span className={styles.detailButtonLabel}>詳細→</span>
+            </Button>
         </div>
         
       </div>
