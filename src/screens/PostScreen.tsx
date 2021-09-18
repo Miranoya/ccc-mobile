@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useForm, useFormState, SubmitErrorHandler } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import imageCompression from 'browser-image-compression';
 import axios from 'axios';
 /* material ui */
@@ -212,7 +212,7 @@ const PostScreen: React.FC = () => {
         <Dialog
           open={loading}
           onClose={handleLoadingDialogClose}
-          aria-labelleby="alert-dialog-title"
+          aria-labelledby="alert-dialog-title"
           aria-describedby="alert-dialog-icon"
         >
           <DialogTitle id="alert-dialog-title">{"送信中"}</DialogTitle>
@@ -225,7 +225,7 @@ const PostScreen: React.FC = () => {
         <Dialog
           open={isResultOpen}
           onClose={handleResultDialogClose}
-          aria-labelleby="alert-dialog-title"
+          aria-labelledby="alert-dialog-title"
           aria-describedby="alert-dialog-icon"
         >
           {isPostSuccessful && (

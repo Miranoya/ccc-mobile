@@ -1,9 +1,6 @@
 import React, {useState} from 'react';
 /* styles */
 import styles from '../styles/ConfirmModal.module.css';
-/* material ui */
-import { Button } from '@material-ui/core';
-import { FlashAutoTwoTone } from '@material-ui/icons';
 
 interface Props {
   modalIsOpen: boolean;

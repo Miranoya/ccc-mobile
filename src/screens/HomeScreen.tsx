@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 /* components */
 import ScrollView from "../components/ScrollView";
 /* styles */

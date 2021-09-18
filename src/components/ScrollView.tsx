@@ -30,38 +30,44 @@ const ScrollView: React.FC = () => {
 
   /* useEffect */
   useEffect( () => {
-    /* 位置情報が取得できるか判定する */
-    if( navigator.geolocation ){
-      // 現在位置を取得できる場合の処理
-      /* 位置情報をセットする */
-      getCurrentPosition();
-      } else {
-      // 現在位置を取得できない場合の処理
-      window.confirm("位置情報が取得できません");
-      return;
-      }
-    
-    setLoading(true);
-    let spotJson: Spot[] = [];
-    const url: string = config.allSpotGETUrl;
-    axios.get(url, {
-      params:{
-        lng: position.longitude,
-        lat: position.latitude
+    /* mountフラグ */
+    let isMounted: boolean = true;
+    if(isMounted){
+      /* 位置情報が取得できるか判定する */
+      if( navigator.geolocation ){
+        // 現在位置を取得できる場合の処理
+        /* 位置情報をセットする */
+        getCurrentPosition();
+        } else {
+        // 現在位置を取得できない場合の処理
+        window.confirm("位置情報が取得できません");
+        return;
         }
-      })
-         .then(res => {
-           console.log("success");
-           spotJson = res.data; 
-           console.log(spotJson);
-           setSpotData(spotJson);
-         })
-         .catch(err => {
-           console.log("failed");
-           console.log(err);
-         });
-    setLoading(false);
-  },[])
+      
+      setLoading(true);
+      let spotJson: Spot[] = [];
+      const url: string = config.allSpotGETUrl;
+      axios.get(url, {
+        params:{
+          lng: position.longitude,
+          lat: position.latitude
+          }
+        })
+          .then(res => {
+            console.log("success");
+            spotJson = res.data; 
+            console.log(spotJson);
+            setSpotData(spotJson);
+          })
+          .catch(err => {
+            console.log("failed");
+            console.log(err);
+          });
+      setLoading(false);
+    }
+    /* unmountする */
+    return () => { isMounted = false };
+  },[]);
 
   /* 更新ボタンの処理 */
   const onUpdate = () => {
@@ -98,30 +104,13 @@ const ScrollView: React.FC = () => {
          });
     setLoading(false);
     }
-
-  const spotDatas: Spot[] = [
-    {
-      uuid: "aaa",
-      title: "危険箇所1",
-      detail: "hogehoge1",
-      lng: 0,
-      lat: 0,
-      place: "福島",
-      thumbnail: "https://dol.ismcdn.jp/mwimgs/c/8/1080m/img_c8dad835c4b9134b067cc8b8efcab22f143142.jpg",
-      sub_image_1: "https://dol.ismcdn.jp/mwimgs/c/8/1080m/img_c8dad835c4b9134b067cc8b8efcab22f143142.jpg",
-      sub_image_2: "https://dol.ismcdn.jp/mwimgs/c/8/1080m/img_c8dad835c4b9134b067cc8b8efcab22f143142.jpg",
-      sub_image_3: "https://dol.ismcdn.jp/mwimgs/c/8/1080m/img_c8dad835c4b9134b067cc8b8efcab22f143142.jpg",
-      agreed: 20,
-      status: "保留中"
-    }
-  ]
-
+    
   return (
     <div>
       { !loading &&(
         <div className={styles.scrollView}>
-          {spotData.map((spot) => 
-            <SpotView spotData = {spot} />
+          {spotData.map((spot, index) => 
+            <SpotView spotData = {spot} key={index} />
           )}
         </div>
       )}

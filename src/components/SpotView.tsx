@@ -1,4 +1,4 @@
-import React, { useState , useEffect } from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
 /* components */
 import { Spot } from './Spot';
@@ -55,7 +55,11 @@ const SpotView: React.FC<Props> = ({spotData}) => {
       <div className={styles.box}>
         <div className={styles.photoPreviewArea}>
           <div className={styles.photoView}>
-            <img src = {spotData.thumbnail} className={styles.previewImg} />
+            <img 
+              src = {spotData.thumbnail} 
+              alt=""
+              className={styles.previewImg} 
+            />
           </div>
         </div>
         <div>

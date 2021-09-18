@@ -1,8 +1,6 @@
 import React, {useState} from "react";
 /* styles */
 import styles from '../styles/PhotosUpload.module.css';
-/* material icon */
-import AddIcon from '@material-ui/icons/Add';
 /* material ui */
 import { Button } from '@material-ui/core';
 
@@ -88,24 +86,24 @@ const PhotosUpload: React.FC<PhotosUploadProps> = ({name, photos, componentRef, 
       <div>
         {[...Array(3)].map((_:number, index: number) => 
         index < photos.length ? (
-          <span className={styles.photoInline}>
+          <span className={styles.photoInline} key={index}>
               <Button type="button" key={index} onClick={() => handleCancel(index)}>
                 <div className={styles.preview}>
                   <img
                     src={URL.createObjectURL(photos[index])}
-                    alt={'あなたの写真 ${index +1}'}
+                    alt=""
                     className={styles.previewImg}
                   />
                 </div>
               </Button>
           </span>
         ) : (
-          <span className={styles.photoInline}>
+          <span className={styles.photoInline} key={index}>
               <Button type="button" key={index}>
                 <div className={styles.preview}>
                   <img
                     src="https://www.shoshinsha-design.com/wp-content/uploads/2020/05/noimage-760x460.png"
-                    alt={'あなたの写真 ${index +1}'}
+                    alt=""
                     className={styles.previewImg}
                   />
                 </div>
