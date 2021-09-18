@@ -1,0 +1,85 @@
+.detailView {
+  width: 100%;
+}
+
+.spotTitleBlock {
+  margin-top: 10px;
+  width: 90%;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.spotTitle {
+  text-align: left;
+}
+
+.divider {
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+.imageView {
+  width: 90%;
+  text-align: center;
+  margin-bottom: 10px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.previewImg {
+  margin-bottom: 10px;
+  object-fit: contain;
+  width: 80%;
+  height: 80%;
+}
+
+.detailArea {
+  width: 90%;
+  font-size: 0.8rem;
+  overflow-wrap: normal;
+  text-align: left;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.spotInfo {
+  width: 90%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.info {
+  text-align: left;
+}
+
+.status {
+  color: red;
+}
+
+.buttonArea {
+  margin-top: 10px;
+  display: flex;
+  justify-content: space-evenly;
+  width: 90%;
+  padding-bottom: 8px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.bottomButton {
+  border-radius: 30px;
+  background: linear-gradient(to bottom right, #2adf88, #36ff9f);
+  box-shadow: 0 3px 6px rgba(7, 110, 124, 0.16),
+    0 3px 6px rgba(7, 110, 124, 0.23);
+  height: 44px;
+  width: 35%;
+  display: flex;
+  position: relative;
+}
+
+.buttonIcon {
+  font-size: 1rem;
+  position: absolute;
+  padding-left: 10px;
+  left: 0;
+}
