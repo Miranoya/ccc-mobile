@@ -16,3 +16,37 @@
 .loadingIcon {
   text-align: center;
 }
+
+.mapWrap {
+  width: 80%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.buttonArea {
+  margin-top: 10px;
+  display: flex;
+  justify-content: space-evenly;
+  width: 90%;
+  padding-bottom: 8px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.bottomButton {
+  border-radius: 30px;
+  background: linear-gradient(to bottom right, #2adf88, #36ff9f);
+  box-shadow: 0 3px 6px rgba(7, 110, 124, 0.16),
+    0 3px 6px rgba(7, 110, 124, 0.23);
+  height: 44px;
+  width: 35%;
+  display: flex;
+  position: relative;
+}
+
+.buttonIcon {
+  font-size: 1rem;
+  position: absolute;
+  padding-left: 10px;
+  left: 0;
+}
