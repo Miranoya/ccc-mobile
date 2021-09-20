@@ -7,10 +7,10 @@ export interface Config {
 }
 
 class ConfigClass implements Config {
-  spotPostUrl = "https://esrnf6poie.execute-api.us-east-1.amazonaws.com/Mock/spot";
-  allSpotGETUrl = "https://esrnf6poie.execute-api.us-east-1.amazonaws.com/Mock/spot"
-  singleSpotGetUrl = "https://esrnf6poie.execute-api.us-east-1.amazonaws.com/Mock/spot/";
-  spotPatchUrl = "https://esrnf6poie.execute-api.us-east-1.amazonaws.com/Mock/spot/";
+  spotPostUrl = String(process.env.REACT_APP_SPOT_POST_URL);
+  allSpotGETUrl = String(process.env.REACT_APP_ALL_SPOT_GET_URL);
+  singleSpotGetUrl = String(process.env.REACT_APP_SINGLE_SPOT_GET_URL);
+  spotPatchUrl = String(process.env.REACT_APP_SPOT_PATCH_URL);
 }
 
 const config = new ConfigClass();
