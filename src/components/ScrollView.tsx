@@ -5,8 +5,10 @@ import styles from '../styles/ScrollView.module.css';
 /* components */
 import { Spot } from './Spot';
 import SpotView from './SpotView';
+import Map from './Map';
 /* material ui */
 import { Button } from '@material-ui/core';
+import RefreshIcon from '@material-ui/icons//Refresh';
 /* config */
 import { config } from '../config/Config';
 /* React Loading */
@@ -119,7 +121,18 @@ const ScrollView: React.FC = () => {
           <ReactLoading type="spin" color="#2adf88" className={styles.loadingIcon}></ReactLoading>
         </div>
       )}
-      <Button onClick={onUpdate}>更新</Button>
+
+
+      <Map spotDatas={spotData} lat={position.latitude} lng={position.longitude} />
+      
+      
+      <div className={styles.buttonArea}>      
+        <Button onClick={onUpdate} variant="contained" color="primary" className={styles.bottomButton} >
+          <RefreshIcon className={styles.buttonIcon} fontSize="small" />
+          <span>更新</span>
+        </Button>
+      </div>
+
     </div>
   )
 }
