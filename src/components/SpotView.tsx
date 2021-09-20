@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useHistory } from "react-router-dom";
 import axios from 'axios';
 /* components */
@@ -11,6 +11,7 @@ import PanToolIcon from '@material-ui/icons/PanTool';
 import { makeStyles } from '@material-ui/core/styles';
 /* config */
 import { config } from '../config/Config';
+import symbolicateStackTrace from 'react-native/Libraries/Core/Devtools/symbolicateStackTrace';
 
 /* styleの設定 */
 const useStyles = makeStyles({
@@ -30,9 +31,22 @@ interface Props{
 }
 
 const SpotView: React.FC<Props> = ({spotData}) => {
+  /* state */
   const classes = useStyles();
   const [isAgreed, setIsAgreed] = useState(false);
   const [agreed, setAgreed] = useState<number>(spotData.agreed);
+
+  /* useEffect */
+  useEffect(() => {
+    const localData = localStorage.getItem(spotData.uuid);
+    if (localData === null) {
+      setIsAgreed(false);
+    } else {
+      const isAgreedLocal: boolean = JSON.parse(localData).agreed;
+      setIsAgreed(isAgreedLocal);
+    }
+    setAgreed(spotData.agreed);
+  },[])
 
   /* useHistory */
   const history = useHistory();
@@ -60,6 +74,8 @@ const SpotView: React.FC<Props> = ({spotData}) => {
            console.log("Failed");
            console.log(err.data);
          });
+    /* localStorageに保存 */
+    localStorage.setItem(spotData.uuid, JSON.stringify(data));
   };
 
   return (
