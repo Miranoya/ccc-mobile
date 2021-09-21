@@ -63,7 +63,7 @@ const SpotDetailScreen: React.FC = () => {
     isAgreed ? setAgreed(agreed-1) : setAgreed(agreed+1);
     setIsAgreed(!isAgreed);
     const data = {agreed: !isAgreed};
-    const url: string= config.spotPatchUrl + spotData.uuid;
+    const url: string= config.spotPatchUrl + spotData.uuid + "/";
     axios.patch(url, data)
          .then(res => {
            console.log("Sucusess");

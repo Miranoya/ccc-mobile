@@ -11,7 +11,6 @@ import PanToolIcon from '@material-ui/icons/PanTool';
 import { makeStyles } from '@material-ui/core/styles';
 /* config */
 import { config } from '../config/Config';
-import symbolicateStackTrace from 'react-native/Libraries/Core/Devtools/symbolicateStackTrace';
 
 /* styleの設定 */
 const useStyles = makeStyles({
@@ -65,7 +64,7 @@ const SpotView: React.FC<Props> = ({spotData}) => {
     isAgreed ? setAgreed(agreed-1) : setAgreed(agreed+1);
     setIsAgreed(!isAgreed);
     const data = {agreed: !isAgreed};
-    const url: string= config.spotPatchUrl + spotData.uuid;
+    const url: string= config.spotPatchUrl + spotData.uuid + "/";
     axios.patch(url, data)
          .then(res => {
            console.log("Sucusess");
