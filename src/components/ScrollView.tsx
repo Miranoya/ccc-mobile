@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import axios from 'axios';
 /* styles */
 import styles from '../styles/ScrollView.module.css';
@@ -19,40 +19,40 @@ const ScrollView: React.FC = () => {
   const [spotData, setSpotData] = useState<Spot[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [position, setPosition] = useState({ latitude: 0, longitude: 0 });
+  const [isAvailable, setAvailable] = useState<boolean>(false);
+
+  /* variables */
+  let isLocationAvailable: boolean = isAvailable;
+  let lat: number = 0;
+  let lng: number = 0;
 
   /* Geolocation API に関する処理 */
   const getCurrentPosition = () => {
-    navigator.geolocation.getCurrentPosition(position => {
-      const { latitude, longitude } = position.coords;
-      setPosition({ latitude, longitude });
-    })
+    return new Promise<void>(resolve => {
+      navigator.geolocation.getCurrentPosition(resPosition => {
+        const { latitude, longitude } = resPosition.coords;
+        lat = latitude;
+        lng = longitude;
+        setPosition({latitude, longitude});
+        resolve();
+      });
+    });
   };
 
-
-
-  /* useEffect */
-  useEffect( () => {
-    /* mountフラグ */
-    let isMounted: boolean = true;
-    if(isMounted){
-      /* 位置情報が取得できるか判定する */
-      if( navigator.geolocation ){
-        // 現在位置を取得できる場合の処理
-        /* 位置情報をセットする */
-        getCurrentPosition();
-        } else {
-        // 現在位置を取得できない場合の処理
-        window.confirm("位置情報が取得できません");
-        return;
-        }
-      
+  /* アップデート処理 */
+  const update = async() => {
+    if(isLocationAvailable) {
+      /* 位置情報を取得する */
+      await getCurrentPosition()
+      console.log({lat: lat, lng: lng});
+      /* 位置情報が取得できていたら */
       setLoading(true);
       let spotJson: Spot[] = [];
       const url: string = config.allSpotGETUrl;
       axios.get(url, {
         params:{
-          lng: position.longitude,
-          lat: position.latitude
+          lng: lng,
+          lat: lat
           }
         })
           .then(res => {
@@ -66,6 +66,21 @@ const ScrollView: React.FC = () => {
             console.log(err);
           });
       setLoading(false);
+      }
+    }
+
+  /* useEffect */
+  useEffect( () => {
+    /* mountフラグ */
+    let isMounted: boolean = true;
+    if(isMounted){
+      if (navigator.geolocation) {
+        isLocationAvailable = true;
+        setAvailable(isLocationAvailable);
+        update();
+      } else {
+        window.confirm("位置情報サービスを利用できません");
+      }
     }
     /* unmountする */
     return () => { isMounted = false };
@@ -73,41 +88,11 @@ const ScrollView: React.FC = () => {
 
   /* 更新ボタンの処理 */
   const onUpdate = () => {
-    /* 位置情報が取得できるか判定する */
-    if( navigator.geolocation ){
-      // 現在位置を取得できる場合の処理
-      /* 位置情報をセットする */
-      getCurrentPosition();
-      } else {
-      // 現在位置を取得できない場合の処理
-      window.confirm("位置情報が取得できません");
-      return;
-      }
-
-    setLoading(true);;
-    let spotJson: Spot[] = [];
-    const url: string = config.allSpotGETUrl;
-    axios.get(url,{
-      params:{
-        lng: position.longitude,
-        lat: position.latitude
-        }
-      })
-         .then(res => {
-           console.log("success");
-           console.log(res);
-           spotJson = res.data;
-           console.log(spotJson);
-           setSpotData(spotJson);
-         })
-         .catch(err => {
-           console.log("failed");
-           console.log(err);
-         });
-    setLoading(false);
-    }
+    update();
+  }
     
   return (
+
     <div>
       { !loading &&(
         <div className={styles.scrollView}>
@@ -123,7 +108,7 @@ const ScrollView: React.FC = () => {
       )}
 
 
-      <Map spotDatas={spotData} lat={position.latitude} lng={position.longitude} />
+      <Map spotDatas={spotData} lat={position.latitude} lng={position.longitude} /> 
       
       
       <div className={styles.buttonArea}>      
@@ -132,8 +117,8 @@ const ScrollView: React.FC = () => {
           <span>更新</span>
         </Button>
       </div>
+    </div> 
 
-    </div>
   )
 }
 

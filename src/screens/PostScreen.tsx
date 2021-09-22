@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import imageCompression from 'browser-image-compression';
 import axios from 'axios';
@@ -33,6 +33,28 @@ const PostScreen: React.FC = () => {
   const [isResultOpen, setIsResultOpen] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
   const [isPostSuccessful, setIsPostSuccessful] = useState<boolean>(false);
+  const [isAvailable, setAvailable] = useState<boolean>(false);
+
+  /* variables */
+  let isLocationAvailable: boolean = isAvailable;
+  let lat: number = 0;
+  let lng: number = 0;
+
+  /* useEffect */
+  useEffect( () => {
+    /* mountフラグ */
+    let isMounted: boolean = true;
+    if(isMounted){
+      if (navigator.geolocation) {
+        isLocationAvailable = true;
+        setAvailable(isLocationAvailable);
+      } else {
+        window.confirm("位置情報サービスを利用できません");
+      }
+    }
+    /* unmountする */
+    return () => { isMounted = false };
+  },[]);
 
   /* Loading Dialogをクローズする処理 */
   const handleLoadingDialogClose = () => {
@@ -55,10 +77,19 @@ const PostScreen: React.FC = () => {
 
   /* Geolocation API に関する処理 */
   const getCurrentPosition = () => {
-    navigator.geolocation.getCurrentPosition(position => {
-      const { latitude, longitude } = position.coords;
-      setPosition({ latitude, longitude });
-    })
+    return new Promise<void>(resolve => {
+      navigator.geolocation.getCurrentPosition(resPosition => {
+        const { latitude, longitude } = resPosition.coords;
+        lat = latitude;
+        lng = longitude;
+        setPosition({latitude, longitude});
+      }, err => {
+        console.error(err);
+        window.confirm("位置情報サービスが有効ではありません");
+        setLoading(false);
+      });
+      resolve();
+    });
   };
 
   /* Submitのイベントハンドラ */
@@ -73,86 +104,82 @@ const PostScreen: React.FC = () => {
       return;
     }
 
-    /* 位置情報が取得できるか判定する */
-    if (navigator.geolocation) {
-      // 現在位置を取得できる場合の処理
+    /* Gelocationが利用できるか判定する */
+    if (isLocationAvailable) {
+
+      /* Loading Dialogをオープン */
+      setLoading(true);
       /* 位置情報をセットする */
-      getCurrentPosition();
-    } else {
-      // 現在位置を取得できない場合の処理
-      window.confirm("位置情報が取得できません");
+      await getCurrentPosition();
+    
+      /* formDataに変換する */
+      const formData = new FormData()
+      formData.append("title", title);
+      formData.append("detail", description);
+      /* 位置情報をformDataに追加する */
+      formData.append("lat", String(lat));
+      formData.append("lng", String(lng));
+
+      /* imageCompressionのoption */
+      const compressOption = {
+        maxSizeMB: 3,
+      }
+
+      /* imageCompression function */
+      const compressedPhotoData = await Promise.all(
+        photos.map(async (photo) => {
+          return {
+            blob: await imageCompression(photo, compressOption),
+            name: photo.name,
+          };
+        })
+      );
+
+      /* formData(photo)初期化 */
+      formData.append("sub_image_1", '');
+      formData.append("sub_image_2", '');
+      formData.append("sub_image_3", '');
+      formData.append("thumbnail", '');
+
+      /* サムネイルを追加 */
+      formData.set("thumbnail", new File([compressedPhotoData[0].blob], compressedPhotoData[0].name));
+
+      /* formDataにphotoを追加 */
+      for (let i = 1; i < compressedPhotoData.length; i++) {
+        const key: string = "sub_image_" + String(i);
+        formData.set(key, new File([compressedPhotoData[i].blob], compressedPhotoData[i].name));
+      }
+
+      console.log(...formData.entries())
+
+      /* axiosによるPOST処理 */
+      //const url: string = "https://httpbin.org/post";
+      const url: string = config.spotPostUrl;
+      const header = {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        }
+      };
+      axios.post(url, formData, header)
+        .then(res => {
+          console.log("Success");
+          console.log(res.data);
+          /* Loading Dialog */
+          handleLoadingDialogClose();
+          /* Result Dialog */
+          setIsPostSuccessful(true);
+          setIsResultOpen(true);
+        }).catch(err => {
+          console.log("Failed");
+          console.log(err.response.data);
+          /* Loading Dialog */
+          handleLoadingDialogClose();
+          /* Result Dialog */
+          setIsPostSuccessful(false);
+          setIsResultOpen(true);
+        });
       return;
     }
-
-    /* formDataに変換する */
-    const formData = new FormData()
-    formData.append("title", title);
-    formData.append("detail", description);
-    /* 位置情報をformDataに追加する */
-    formData.append("lat", String(position.latitude));
-    formData.append("lng", String(position.longitude));
-
-    /* imageCompressionのoption */
-    const compressOption = {
-      maxSizeMB: 3,
-    }
-
-    /* imageCompression function */
-    const compressedPhotoData = await Promise.all(
-      photos.map(async (photo) => {
-        return {
-          blob: await imageCompression(photo, compressOption),
-          name: photo.name,
-        };
-      })
-    );
-
-    /* formData(photo)初期化 */
-    formData.append("sub_image_1", '');
-    formData.append("sub_image_2", '');
-    formData.append("sub_image_3", '');
-    formData.append("thumbnail", '');
-
-    /* サムネイルを追加 */
-    formData.set("thumbnail", new File([compressedPhotoData[0].blob], compressedPhotoData[0].name));
-
-    /* formDataにphotoを追加 */
-    for (let i = 1; i < compressedPhotoData.length; i++) {
-      const key: string = "sub_image_" + String(i);
-      formData.set(key, new File([compressedPhotoData[i].blob], compressedPhotoData[i].name));
-    }
-
-    console.log(...formData.entries())
-
-    /* Loading Dialogをオープン */
-    setLoading(true);
-
-    /* axiosによるPOST処理 */
-    //const url: string = "https://httpbin.org/post";
-    const url: string = config.spotPostUrl;
-    const header = {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      }
-    };
-    axios.post(url, formData, header)
-      .then(res => {
-        console.log("Success");
-        console.log(res.data);
-        /* Loading Dialog */
-        handleLoadingDialogClose();
-        /* Result Dialog */
-        setIsPostSuccessful(true);
-        setIsResultOpen(true);
-      }).catch(err => {
-        console.log("Failed");
-        console.log(err.response.data);
-        /* Loading Dialog */
-        handleLoadingDialogClose();
-        /* Result Dialog */
-        setIsPostSuccessful(false);
-        setIsResultOpen(true);
-      })
   }
 
   return (
