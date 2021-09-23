@@ -46,9 +46,8 @@ const Map: React.FC<Props> = ({spotDatas, lat, lng}) => {
     spotDatas.map((spot) => {
       positions.push({lat: spot.lat, lng: spot.lng});
     });
-    console.log(spots);
-    console.log(selfPosition);
-    console.log(positions);
+    console.log(spotDatas);
+    console.log({lat: lat, lng: lng});
   },[]);
 
   return(
@@ -64,7 +63,7 @@ const Map: React.FC<Props> = ({spotDatas, lat, lng}) => {
               zoom={15}
             >
             <Marker position={center} />
-            {spotDatas.map((spot, index) => 
+            {spots.map((spot, index) => 
               positions.map((position, index) => {
                 <Marker position={position} label={"危険箇所"} key={index} />
               })
@@ -75,6 +74,7 @@ const Map: React.FC<Props> = ({spotDatas, lat, lng}) => {
         {(lng==0 && lat==0) &&
           <div>地図が表示できません</div>
         } */}
+
       </div>
     </div>
   );
