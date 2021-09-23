@@ -1,8 +1,24 @@
 .spotViewInfo {
   margin-top: 10px;
-  width: 80%;
+  width: 85%;
   margin-right: auto;
   margin-left: auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.switchSelector {
+  padding: 3px;
+}
+
+.selectorLabel {
+  font-size: 0.9rem;
+  color: white;
+}
+
+.switchSelectorWrapper {
+  width: 30%;
 }
 
 .spotViewTitle {

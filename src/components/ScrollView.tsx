@@ -18,7 +18,11 @@ import Slider from "react-slick"
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
-const ScrollView: React.FC = () => {
+interface Props{
+ isAll: boolean;
+}
+
+const ScrollView: React.FC<Props> = ({isAll}) => {
   /* useState */
   const [spotData, setSpotData] = useState<Spot[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
@@ -54,7 +58,7 @@ const ScrollView: React.FC = () => {
     prevArrow: <Arrow />,
   };
 
-  /* Geolocation API に関する処理 */
+  /* Geolocation API に関する処  */
   const getCurrentPosition = () => {
     return new Promise<void>(resolve => {
       navigator.geolocation.getCurrentPosition(resPosition => {
@@ -77,22 +81,42 @@ const ScrollView: React.FC = () => {
       setLoading(true);
       let spotJson: Spot[] = [];
       const url: string = config.allSpotGETUrl;
-      axios.get(url, {
-        params:{
-          lng: lng,
-          lat: lat
-          }
-        })
-          .then(res => {
-            console.log("success");
-            spotJson = res.data; 
-            console.log(spotJson);
-            setSpotData(spotJson);
+      //const url: string = "https://httpbin.org/get";
+      
+      /* GET処理分岐 */
+      if(isAll) {
+        /* 全て */
+        axios.get(url)
+            .then(res => {
+              console.log("success");
+              spotJson = res.data; 
+              console.log(spotJson);
+              setSpotData(spotJson);
+            })
+            .catch(err => {
+              console.log("failed");
+              console.log(err);
+            });
+      } else {
+        /* 近く */
+        axios.get(url, {
+          params:{
+            lng: lng,
+            lat: lat
+            }
           })
-          .catch(err => {
-            console.log("failed");
-            console.log(err);
-          });
+            .then(res => {
+              console.log("success");
+              spotJson = res.data; 
+              console.log(spotJson);
+              setSpotData(spotJson);
+            })
+            .catch(err => {
+              console.log("failed");
+              console.log(err);
+            });
+      }
+      
       setLoading(false);
       }
     }
