@@ -1,9 +1,15 @@
 .scrollView {
   padding-top: 10px;
-  padding-bottom: 10px;
-  overflow-x: auto;
-  white-space: nowrap;
-  -webkit-overflow-scrolling: touch;
+  padding-bottom: 30px;
+  width: 90%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.slider {
+  width: 90%;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .loadingArea {

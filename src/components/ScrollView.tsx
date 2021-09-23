@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useRef} from 'react';
+import React, {useState, useEffect, Component} from 'react';
 import axios from 'axios';
 /* styles */
 import styles from '../styles/ScrollView.module.css';
@@ -7,17 +7,21 @@ import { Spot } from './Spot';
 import SpotView from './SpotView';
 import Map from './Map';
 /* material ui */
-import { Button } from '@material-ui/core';
+import { Button, Divider } from '@material-ui/core';
 import RefreshIcon from '@material-ui/icons//Refresh';
 /* config */
 import { config } from '../config/Config';
 /* React Loading */
 import ReactLoading from 'react-loading';
+/* slick */
+import Slider from "react-slick"
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 
 const ScrollView: React.FC = () => {
   /* useState */
   const [spotData, setSpotData] = useState<Spot[]>([]);
-  const [loading, setLoading] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(true);
   const [position, setPosition] = useState({ latitude: 0, longitude: 0 });
   const [isAvailable, setAvailable] = useState<boolean>(false);
 
@@ -25,6 +29,30 @@ const ScrollView: React.FC = () => {
   let isLocationAvailable: boolean = isAvailable;
   let lat: number = 0;
   let lng: number = 0;
+
+  /* arrow option */
+  const Arrow = (props: any) => {
+    const { className, style, onClick } = props;
+    return (
+      <div
+        className={className}
+        style={{ ...style, background: "#a9a9a9"}}
+        onClick={onClick}
+      />
+    );
+  }
+
+  /* slick option */
+  const settings = {
+    dots: false,
+    infinite: false,
+    speed: 500,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    arrows: true,
+    nextArrow: <Arrow />,
+    prevArrow: <Arrow />,
+  };
 
   /* Geolocation API に関する処理 */
   const getCurrentPosition = () => {
@@ -90,15 +118,18 @@ const ScrollView: React.FC = () => {
   const onUpdate = () => {
     update();
   }
+
     
   return (
 
     <div>
       { !loading &&(
         <div className={styles.scrollView}>
+          <Slider {...settings} className={styles.slider}>
           {spotData.map((spot, index) => 
             <SpotView spotData = {spot} key={index} />
           )}
+          </Slider>
         </div>
       )}
       { loading &&(
@@ -107,8 +138,9 @@ const ScrollView: React.FC = () => {
         </div>
       )}
 
+      <Divider variant="middle" className={styles.divider} />
 
-      <Map spotDatas={spotData} lat={position.latitude} lng={position.longitude} /> 
+      <Map spotDatas={spotData} lat={position.latitude} lng={position.longitude} />
       
       
       <div className={styles.buttonArea}>      
@@ -116,7 +148,7 @@ const ScrollView: React.FC = () => {
           <RefreshIcon className={styles.buttonIcon} fontSize="small" />
           <span>更新</span>
         </Button>
-      </div>
+      </div> 
     </div> 
 
   )
