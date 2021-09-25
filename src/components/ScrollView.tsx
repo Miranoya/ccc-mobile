@@ -58,7 +58,7 @@ const ScrollView: React.FC<Props> = ({isAll}) => {
     prevArrow: <Arrow />,
   };
 
-  /* Geolocation API に関する処  */
+  /* Geolocation API に関する処理 */
   const getCurrentPosition = () => {
     return new Promise<void>(resolve => {
       navigator.geolocation.getCurrentPosition(resPosition => {
@@ -66,6 +66,7 @@ const ScrollView: React.FC<Props> = ({isAll}) => {
         lat = latitude;
         lng = longitude;
         setPosition({latitude, longitude});
+        console.log(resPosition);
         resolve();
       });
     });
@@ -81,7 +82,6 @@ const ScrollView: React.FC<Props> = ({isAll}) => {
       setLoading(true);
       let spotJson: Spot[] = [];
       const url: string = config.allSpotGETUrl;
-      //const url: string = "https://httpbin.org/get";
       
       /* GET処理分岐 */
       if(isAll) {
@@ -165,7 +165,6 @@ const ScrollView: React.FC<Props> = ({isAll}) => {
       <Divider variant="middle" className={styles.divider} />
 
       <Map spotDatas={spotData} lat={position.latitude} lng={position.longitude} />
-      
       
       <div className={styles.buttonArea}>      
         <Button onClick={onUpdate} variant="contained" color="primary" className={styles.bottomButton} >

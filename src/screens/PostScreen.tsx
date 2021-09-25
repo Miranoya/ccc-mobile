@@ -75,23 +75,6 @@ const PostScreen: React.FC = () => {
     }
   }
 
-  /* Geolocation API に関する処理 */
-  const getCurrentPosition = () => {
-    return new Promise<void>(resolve => {
-      navigator.geolocation.getCurrentPosition(resPosition => {
-        const { latitude, longitude } = resPosition.coords;
-        lat = latitude;
-        lng = longitude;
-        setPosition({latitude, longitude});
-      }, err => {
-        console.error(err);
-        window.confirm("位置情報サービスが有効ではありません");
-        setLoading(false);
-      });
-      resolve();
-    });
-  };
-
   /* Submitのイベントハンドラ */
   const handleOnSubmit = async (data: Inputs) => {
     const { title, description } = data;
@@ -106,11 +89,16 @@ const PostScreen: React.FC = () => {
 
     /* Gelocationが利用できるか判定する */
     if (isLocationAvailable) {
-
-      /* Loading Dialogをオープン */
-      setLoading(true);
       /* 位置情報をセットする */
-      await getCurrentPosition();
+      navigator.geolocation.getCurrentPosition(async resPosition => {
+        const { latitude, longitude } = resPosition.coords;
+        lat = latitude;
+        lng = longitude;
+        setPosition({latitude, longitude});
+        console.log({lat: lat, lng: lng});
+
+        /* Loading Dialogをオープン */
+      setLoading(true);
     
       /* formDataに変換する */
       const formData = new FormData()
@@ -153,7 +141,6 @@ const PostScreen: React.FC = () => {
       console.log(...formData.entries())
 
       /* axiosによるPOST処理 */
-      //const url: string = "https://httpbin.org/post";
       const url: string = config.spotPostUrl;
       const header = {
         headers: {
@@ -178,6 +165,14 @@ const PostScreen: React.FC = () => {
           setIsPostSuccessful(false);
           setIsResultOpen(true);
         });
+        
+      }, err => {
+        console.error(err);
+        window.confirm("位置情報サービスが有効ではありません");
+        setLoading(false);
+      });
+
+      
       return;
     }
   }
