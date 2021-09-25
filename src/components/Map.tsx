@@ -31,8 +31,8 @@ const Map: React.FC<Props> = ({spotDatas, lat, lng}) => {
   };
   /* center */
   const center = {
-    lat: 35,
-    lng: 137,
+    lat: lat,
+    lng: lng,
   };
   /* option */
   const options = {
@@ -53,8 +53,8 @@ const Map: React.FC<Props> = ({spotDatas, lat, lng}) => {
   return(
     <div className={styles.rectWrap}>
       <div className={styles.rect}>
-        {/*
-        {(lng!=0 && lat!=0) &&
+
+        {(lng!==0 && lat!==0) &&
           <LoadScript googleMapsApiKey={API_KEY}>
             <GoogleMap
               mapContainerStyle={containerStyle}
@@ -63,17 +63,17 @@ const Map: React.FC<Props> = ({spotDatas, lat, lng}) => {
               zoom={15}
             >
             <Marker position={center} />
-            {spots.map((spot, index) => 
-              positions.map((position, index) => {
+            { positions.map((position, index) => {
                 <Marker position={position} label={"危険箇所"} key={index} />
+                console.log(position);
               })
-            )}
+            }
             </GoogleMap>
           </LoadScript>
         }
-        {(lng==0 && lat==0) &&
+        {(lng===0 && lat===0) &&
           <div>地図が表示できません</div>
-        } */}
+        } 
 
       </div>
     </div>
