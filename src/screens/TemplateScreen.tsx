@@ -1,19 +1,15 @@
 import React, {useState} from "react";
 
 /* material-ui */
-import { AppBar, Paper, Tabs, Tab, IconButton, Toolbar, Typography } from "@material-ui/core";
+import { AppBar, Paper, Tabs, Tab, Toolbar, Typography } from "@material-ui/core";
 import { makeStyles, createTheme, ThemeProvider } from '@material-ui/core/styles';
 
 /* router */
 import { Link } from "react-router-dom";
 
-/* styles */
-import styles from '../styles/TemplateScreen.module.css';
-
 /* material icon */
 import HomeIcon from '@material-ui/icons/Home';
 import EmailIcon from '@material-ui/icons/Email';
-import MenuIcon from '@material-ui/icons/Menu';
 
 /* styleの設定 */
 const useStyles = makeStyles({
@@ -61,11 +57,8 @@ const Template: React.FC = () => {
         <div className={classes.appbar}>
           <AppBar position="static" color="primary">
             <Toolbar>
-              <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
-                <MenuIcon />
-              </IconButton>
               <Typography variant="h6" className={classes.title}>
-                タイトル
+                みらのや
               </Typography>
             </Toolbar>
           </AppBar>
@@ -73,7 +66,7 @@ const Template: React.FC = () => {
 
         <div>
           <Paper square className={classes.root}>
-            <Tabs value={value} onChange={handleChange} centered aria-label=" tabs" className={styles.tabs}>
+            <Tabs value={value} onChange={handleChange} centered aria-label=" tabs">
               <Tab icon={<HomeIcon />} label="ホーム" component={Link} to="/civ"    className={classes.tabicon}/>
               <Tab icon={<EmailIcon />} label="報告"  component={Link} to="/civ/post" className={classes.tabicon}/>
             </Tabs>
