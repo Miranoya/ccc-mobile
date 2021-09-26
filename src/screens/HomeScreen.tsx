@@ -24,7 +24,7 @@ const HomeScreen: React.FC = () => {
     {
       label: <span className={styles.selectorLabel}>すべて</span>,
       value: true,
-      selectedBackgroundColor: "#51fff5"
+      selectedBackgroundColor: "#ff6347"
     }
   ];
 
