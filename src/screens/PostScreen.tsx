@@ -158,7 +158,7 @@ const PostScreen: React.FC = () => {
           setIsResultOpen(true);
         }).catch(err => {
           console.log("Failed");
-          console.log(err.response.data);
+          console.log(err.data);
           /* Loading Dialog */
           handleLoadingDialogClose();
           /* Result Dialog */
