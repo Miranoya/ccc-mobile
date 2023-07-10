@@ -1,7 +1,7 @@
 {
   "name": "ccc-mobile",
   "version": "0.1.0",
-  "homepage": "./",
+  "homepage": "https://miranoya.github.io/ccc-mobile",
   "private": true,
   "dependencies": {
     "@material-ui/core": "^4.12.3",
