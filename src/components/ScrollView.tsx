@@ -17,6 +17,7 @@ import ReactLoading from 'react-loading';
 import Slider from "react-slick"
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import { mock } from '../mock/mock';
 
 interface Props{
  isAll: boolean;
@@ -24,8 +25,8 @@ interface Props{
 
 const ScrollView: React.FC<Props> = ({isAll}) => {
   /* useState */
-  const [spotData, setSpotData] = useState<Spot[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
+  const [spotData, setSpotData] = useState<Spot[]>(mock);
+  const [loading, setLoading] = useState<boolean>(false);
   const [position, setPosition] = useState({ latitude: 0, longitude: 0 });
   const [isAvailable, setAvailable] = useState<boolean>(false);
 
@@ -129,7 +130,7 @@ const ScrollView: React.FC<Props> = ({isAll}) => {
       if (navigator.geolocation) {
         isLocationAvailable = true;
         setAvailable(isLocationAvailable);
-        update();
+        // update();
       } else {
         window.confirm("位置情報サービスを利用できません");
       }
@@ -140,7 +141,8 @@ const ScrollView: React.FC<Props> = ({isAll}) => {
 
   /* 更新ボタンの処理 */
   const onUpdate = () => {
-    update();
+    // update();
+    console.log("update")
   }
 
     
